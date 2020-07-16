@@ -32,7 +32,7 @@
     notify:
     - reload firewall
 
-  - name: allow svc firewall
+  - name: allow firewall service
     firewalld:
       zone: public
       service: "{{ item }}"
@@ -60,7 +60,7 @@
       enabled: yes
       state: started
 
-  - name: Create a new primary partition with a size of 2GiB for brick
+  - name: Create a new primary partition with a size of {{ partition_size }} for brick
     parted:
       device: "{{ disk_device }}"
       number: 1
@@ -68,7 +68,7 @@
       #part_start: 2MiB
       part_end: "{{ partition_size }}"
 
-  - name: format partition
+  - name: format partition {{ disk_device }}1
     filesystem:
       fstype: "{{ brick_fstype }}"
       dev: "{{ disk_device }}1"

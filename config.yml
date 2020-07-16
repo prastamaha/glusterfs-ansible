@@ -6,7 +6,7 @@ server1_hostname: server1
 server2_ip_address: 10.1.1.87
 server2_hostname: server2
 
-# note: must use a new disk that has not been partitioned
+# note: must use a new disk that has not been partitioned / os installed
 # gluster disk 
 disk_device: /dev/vdb
 partition_size: 2GiB
