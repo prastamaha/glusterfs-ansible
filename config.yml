@@ -1,0 +1,19 @@
+# server1
+server1_ip_address: 10.1.1.164
+server1_hostname: server1
+
+#server2
+server2_ip_address: 10.1.1.87
+server2_hostname: server2
+
+# note: must use a new disk that has not been partitioned
+# gluster disk 
+disk_device: /dev/vdb
+partition_size: 2GiB
+
+# brick 
+brick_path: /bricks/brick1
+brick_fstype: ext4
+
+# volume 
+volume_name: vol0

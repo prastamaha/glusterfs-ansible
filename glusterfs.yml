@@ -1,0 +1,120 @@
+---
+
+- hosts: gluster
+  become: yes
+  vars_files:
+    - config.yml
+  tasks:
+
+  - name: configure /etc/hosts file
+    template:
+      src: files/etc-hosts.j2
+      dest: /etc/hosts
+
+  - name: open firewall port
+    firewalld:
+      zone: public
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled
+    loop:
+     - 24007-24009/tcp
+     - 111/tcp
+     - 139/tcp
+     - 445/tcp
+     - 965/tcp
+     - 2049/tcp
+     - 38465-38469/tcp
+     - 631/tcp
+     - 111/udp
+     - 963/udp
+     - 49152-49251/tcp
+    notify:
+    - reload firewall
+
+  - name: allow svc firewall
+    firewalld:
+      zone: public
+      service: "{{ item }}"
+      state: enabled
+      permanent: yes      
+    loop:
+      - samba
+      - nfs
+      - samba-client
+    notify:
+    - reload firewall
+
+  - name: install gluster package
+    yum:
+      name: "{{ item }}"
+      state: latest
+    loop:
+      - epel-release
+      - centos-release-gluster
+      - glusterfs-server
+
+  - name: start glusterd service
+    service:
+      name: glusterd
+      enabled: yes
+      state: started
+
+  - name: Create a new primary partition with a size of 2GiB for brick
+    parted:
+      device: "{{ disk_device }}"
+      number: 1
+      state: present
+      #part_start: 2MiB
+      part_end: "{{ partition_size }}"
+
+  - name: format partition
+    filesystem:
+      fstype: "{{ brick_fstype }}"
+      dev: "{{ disk_device }}1"
+
+  - name: Create directory brick
+    file:
+      path: "{{ brick_path }}"
+      state: directory
+
+  - name: Mount partition to directory
+    mount:
+      path: "{{ brick_path }}"
+      src: "{{ disk_device }}1"
+      fstype: "{{ brick_fstype }}"
+      state: mounted
+
+  handlers:
+  - name: reload firewall
+    shell: firewall-cmd --reload
+
+
+- hosts: "{{ server1_hostname }}"
+  vars_files:
+    - config.yml
+  become: yes
+  tasks:
+
+  - name: Create a trusted storage pool
+    gluster_peer:
+      state: present
+      nodes:
+        - "{{ server1_hostname }}"
+        - "{{ server2_hostname }}"
+
+  - name: create gluster volume
+    gluster_volume:
+      state: present
+      name: "{{ volume_name }}"
+      bricks: "{{ brick_path }}/{{ volume_name }}"
+      rebalance: yes
+      cluster:
+        - "{{ server1_hostname }}"
+        - "{{ server2_hostname }}"
+    run_once: true
+
+  - name: start gluster volume
+    gluster_volume:
+      state: started
+      name: "{{ volume_name }}"

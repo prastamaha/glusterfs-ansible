@@ -1,0 +1,3 @@
+[gluster]
+server1 ansible_user=root
+server2 ansible_user=root
