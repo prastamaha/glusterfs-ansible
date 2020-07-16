@@ -8,7 +8,7 @@
 
   - name: configure /etc/hosts file
     template:
-      src: files/etc-hosts.j2
+      src: templates/etc-hosts.j2
       dest: /etc/hosts
 
   - name: open firewall port
