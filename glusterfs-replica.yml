@@ -103,29 +103,17 @@
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
 
-  - name: create gluster volume distributed
+  - name: create gluster volume
     gluster_volume:
       state: present
       name: "{{ volume_name }}"
       bricks: "{{ brick_path }}/{{ volume_name }}"
-      rebalance: yes
-      cluster:
-        - "{{ server1_hostname }}"
-        - "{{ server2_hostname }}"
-    run_once: true
-    when: "{{ volume_type }} == distributed"
-
-  - name: create gluster volume replicated
-    gluster_volume:
-      state: present
-      name: "{{ volume_name }}"
-      bricks: "{{ brick_path }}/{{ volume_name }}"
+     # rebalance: yes
       replicas: 2
       cluster:
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
     run_once: true
-    when: "{{ volume_type }} == replicated"
 
   - name: start gluster volume
     gluster_volume:

@@ -17,3 +17,5 @@ brick_fstype: ext4
 
 # volume 
 volume_name: vol0
+# choose ( replicated / distributed )
+volume_type: distributed
