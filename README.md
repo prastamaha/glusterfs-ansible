@@ -1,6 +1,6 @@
 # Ansible Playbook for Deploy 2 Node Glusterfs Cluster
 
-This playbook has been tested with OS Centos7
+This playbook has been tested on Centos7
 
 ## Prerequisites
 
