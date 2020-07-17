@@ -3,7 +3,7 @@
 - hosts: gluster
   become: yes
   vars_files:
-    - config.yml
+    - vars/config.yml
   tasks:
 
   - name: configure /etc/hosts file
@@ -92,7 +92,7 @@
 
 - hosts: "{{ server1_hostname }}"
   vars_files:
-    - config.yml
+    - vars/config.yml
   become: yes
   tasks:
 
@@ -113,7 +113,7 @@
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
     run_once: true
-    when: "{{ volume_type }} == distributed"
+    when: volume_type == "distributed"
 
   - name: create gluster volume replicated
     gluster_volume:
@@ -125,7 +125,7 @@
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
     run_once: true
-    when: "{{ volume_type }} == replicated"
+    when: volume_type == "replicated"
 
   - name: start gluster volume
     gluster_volume:
