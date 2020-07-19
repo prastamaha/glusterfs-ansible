@@ -1,10 +1,14 @@
 # server1
-server1_ip_address: 10.1.1.164
+server1_ip_address: 10.1.1.55
 server1_hostname: server1
 
 #server2
-server2_ip_address: 10.1.1.87
+server2_ip_address: 10.1.1.60
 server2_hostname: server2
+
+#server3
+server3_ip_address: 10.1.1.70
+server3_hostname: server3
 
 # note: must use a new disk that has not been partitioned / os installed
 # gluster disk 
@@ -17,5 +21,6 @@ brick_fstype: ext4
 
 # volume 
 volume_name: vol0
-# choose ( replicated / distributed )
+
+# choose between ( replicated / distributed )
 volume_type: distributed

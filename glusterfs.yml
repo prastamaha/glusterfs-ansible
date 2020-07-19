@@ -102,6 +102,7 @@
       nodes:
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
+        - "{{ server3_hostname }}"
 
   - name: create gluster volume distributed
     gluster_volume:
@@ -112,6 +113,7 @@
       cluster:
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
+        - "{{ server3_hostname }}"
     run_once: true
     when: volume_type == "distributed"
 
@@ -124,6 +126,7 @@
       cluster:
         - "{{ server1_hostname }}"
         - "{{ server2_hostname }}"
+        - "{{ server3_hostname }}"
     run_once: true
     when: volume_type == "replicated"
 
