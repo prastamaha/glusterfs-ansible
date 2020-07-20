@@ -13,7 +13,7 @@ server3_hostname: server3
 # note: must use a new disk that has not been partitioned / os installed
 # gluster disk 
 disk_device: /dev/vdb
-partition_size: 2GiB
+partition_size: 3GiB
 
 # brick 
 brick_path: /bricks/brick1
@@ -23,4 +23,4 @@ brick_fstype: ext4
 volume_name: vol0
 
 # choose between ( replicated / distributed )
-volume_type: distributed
+volume_type: replicated
